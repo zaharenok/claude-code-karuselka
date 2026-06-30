@@ -24,14 +24,15 @@ Publish:
 ```
 
 ## Features
-
+## Features
 - **Multi-platform**: Instagram, Meta Ads, Facebook, LinkedIn
 - **Full pipeline**: Research → Copy → Design → Image/Video generation → QA → Upload → Publish
 - **Research integration**: Tavily MCP, Brave Search
 - **Image generation**: Kie.ai, OpenRouter, fal.ai, local models
-- **Video generation**: Grok Video, fal.ai
+- **Video generation**: Seedance 1.5 Pro (ByteDance), Grok Video, fal.ai
 - **Storage**: Kie.ai, S3, local
-- **Hermes integration**: Slash commands, delegate_task orchestration
+- **Hermes integration**: Slash commands, delegate_task orchestration, MCP server
+- **CLI**: Command-line interface for manual carousel creation
 
 ## Architecture
 
@@ -238,6 +239,47 @@ INSTAGRAM_ACCESS_TOKEN=...
 META_ADS_ACCOUNT_ID=...
 META_ADS_ACCESS_TOKEN=...
 ```
+
+## MCP Server & CLI
+
+FrameForge provides MCP server and CLI for integration:
+
+### MCP Server
+
+Integrate with Hermes Agent and other MCP-compatible agents:
+
+```bash
+# Install MCP dependencies
+pip install -r mcp_requirements.txt
+
+# Add to Hermes config (~/.hermes/config.yaml)
+mcp_servers:
+  frameforge:
+    command: python
+    args: ["/path/to/frameforge/mcp_server.py"]
+```
+
+Full documentation: [MCP_CLI.md](MCP_CLI.md)
+
+### CLI
+
+Command-line interface for manual carousel creation:
+
+```bash
+# Make executable
+chmod +x frameforge.py
+
+# Create carousel
+./frameforge.py create --topic "AI marketing" --platform instagram
+
+# Get status
+./frameforge.py status --session-id 20250115-143022
+
+# List sessions
+./frameforge.py list
+```
+
+Full documentation: [MCP_CLI.md](MCP_CLI.md)
 
 ## Development
 
