@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-FrameForge MCP Server
+Karuselka MCP Server
 Provides MCP tools for social media carousel creation via Hermes agents.
 """
 
@@ -21,22 +21,22 @@ except ImportError:
     print("MCP server not available. Install with: pip install mcp")
     sys.exit(1)
 
-# Import FrameForge modules
+# Import Karuselka modules
 # from image_gen import ImageGenerator
 # from slice_grid import slice_grid
 
 # Initialize MCP server
-server = Server("frameforge")
+server = Server("karuselka")
 
 @server.list_tools()
 async def list_tools() -> List[Tool]:
-    """List available FrameForge tools."""
+    """List available Karuselka tools."""
     return [
         Tool(
             name="create_carousel",
             description=(
                 "Create a new social media carousel (9 slides, 3×3 grid) "
-                "through the FrameForge agent pipeline. "
+                "through the Karuselka agent pipeline. "
                 "Supports: instagram, meta-ads, facebook, linkedin"
             ),
             inputSchema={
@@ -196,7 +196,7 @@ async def create_carousel_tool(
     # Check if running in Hermes environment
     try:
         import os
-        session_root = Path(os.getenv("FRAMEFORGE_SESSION_ROOT", "~/.hermes/frameforge/sessions"))
+        session_root = Path(os.getenv("KARUSELKA_SESSION_ROOT", "~/.hermes/karuselka/sessions"))
         session_root = session_root.expanduser()
 
         # Create session directory
@@ -258,7 +258,7 @@ async def publish_carousel_tool(session_id: str) -> List[TextContent]:
 
     try:
         import os
-        session_root = Path(os.getenv("FRAMEFORGE_SESSION_ROOT", "~/.hermes/frameforge/sessions"))
+        session_root = Path(os.getenv("KARUSELKA_SESSION_ROOT", "~/.hermes/karuselka/sessions"))
         session_root = session_root.expanduser()
 
         # Find session
@@ -303,7 +303,7 @@ async def get_carousel_status_tool(session_id: str) -> List[TextContent]:
 
     try:
         import os
-        session_root = Path(os.getenv("FRAMEFORGE_SESSION_ROOT", "~/.hermes/frameforge/sessions"))
+        session_root = Path(os.getenv("KARUSELKA_SESSION_ROOT", "~/.hermes/karuselka/sessions"))
         session_root = session_root.expanduser()
 
         # Find session
@@ -364,7 +364,7 @@ async def list_carousel_sessions_tool(
 
     try:
         import os
-        session_root = Path(os.getenv("FRAMEFORGE_SESSION_ROOT", "~/.hermes/frameforge/sessions"))
+        session_root = Path(os.getenv("KARUSELKA_SESSION_ROOT", "~/.hermes/karuselka/sessions"))
         session_root = session_root.expanduser()
 
         if not session_root.exists():
@@ -433,7 +433,7 @@ async def get_carousel_assets_tool(session_id: str) -> List[TextContent]:
 
     try:
         import os
-        session_root = Path(os.getenv("FRAMEFORGE_SESSION_ROOT", "~/.hermes/frameforge/sessions"))
+        session_root = Path(os.getenv("KARUSELKA_SESSION_ROOT", "~/.hermes/karuselka/sessions"))
         session_root = session_root.expanduser()
 
         # Find session

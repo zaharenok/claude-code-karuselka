@@ -1,4 +1,4 @@
-# FrameForge
+# Karuselka
 
 Agent system for creating social media carousels: research, copy, design, image/video generation, QA, upload, and publish.
 
@@ -7,8 +7,8 @@ Supported platforms: Instagram, Meta Ads, Facebook, LinkedIn.
 ## Quick Start
 
 ```bash
-git clone https://github.com/zaharenok/frameforge.git
-cd frameforge
+git clone https://github.com/zaharenok/claude-code-karuselka.git
+cd claude-code-karuselka
 pip install -r scripts/requirements.txt
 cp .env.example .env  # Add your API keys
 ```
@@ -20,7 +20,7 @@ Create a carousel:
 
 Publish:
 ```bash
-/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
+/carousel-publish --session-id ~/.hermes/karuselka/sessions/{timestamp}/
 ```
 
 ## Features
@@ -36,7 +36,7 @@ Publish:
 
 ## Architecture
 
-FrameForge uses Hermes Agent orchestration with specialized subagents:
+Karuselka uses Hermes Agent orchestration with specialized subagents:
 
 | Agent | Role | Tools |
 |-------|------|-------|
@@ -100,8 +100,8 @@ Full details in [AGENT-PIPELINE.md](AGENT-PIPELINE.md).
 
 1. Clone repository:
 ```bash
-git clone https://github.com/zaharenok/frameforge.git
-cd frameforge
+git clone https://github.com/zaharenok/karuselka.git
+cd karuselka
 ```
 
 2. Install Python dependencies:
@@ -142,7 +142,7 @@ Parameters:
 ### Publish carousel
 
 ```bash
-/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
+/carousel-publish --session-id ~/.hermes/karuselka/sessions/{timestamp}/
 ```
 
 ### Platform-specific options
@@ -158,7 +158,7 @@ Parameters:
 ## Session Structure
 
 ```
-~/.hermes/frameforge/sessions/{timestamp}/
+~/.hermes/karuselka/sessions/{timestamp}/
 ├── 00-brief.md          # Initial brief
 ├── 01-research.md       # Research report
 ├── 02-copy.md           # Copy for 9 slides + caption
@@ -242,7 +242,7 @@ META_ADS_ACCESS_TOKEN=...
 
 ## MCP Server & CLI
 
-FrameForge provides MCP server and CLI for integration:
+Karuselka provides MCP server and CLI for integration:
 
 ### MCP Server
 
@@ -254,9 +254,9 @@ pip install -r mcp_requirements.txt
 
 # Add to Hermes config (~/.hermes/config.yaml)
 mcp_servers:
-  frameforge:
+  karuselka:
     command: python
-    args: ["/path/to/frameforge/mcp_server.py"]
+    args: ["/path/to/karuselka/mcp_server.py"]
 ```
 
 Full documentation: [MCP_CLI.md](MCP_CLI.md)
@@ -267,16 +267,16 @@ Command-line interface for manual carousel creation:
 
 ```bash
 # Make executable
-chmod +x frameforge.py
+chmod +x karuselka.py
 
 # Create carousel
-./frameforge.py create --topic "AI marketing" --platform instagram
+./karuselka.py create --topic "AI marketing" --platform instagram
 
 # Get status
-./frameforge.py status --session-id 20250115-143022
+./karuselka.py status --session-id 20250115-143022
 
 # List sessions
-./frameforge.py list
+./karuselka.py list
 ```
 
 Full documentation: [MCP_CLI.md](MCP_CLI.md)

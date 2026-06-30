@@ -1,8 +1,8 @@
-# FrameForge MCP & CLI
+# Karuselka MCP & CLI
 
 ## MCP Server
 
-FrameForge provides an MCP server for integration with Hermes Agent and other MCP-compatible agents.
+Karuselka provides an MCP server for integration with Hermes Agent and other MCP-compatible agents.
 
 ### Installation
 
@@ -16,11 +16,11 @@ pip install -r mcp_requirements.txt
 
 ```yaml
 mcp_servers:
-  frameforge:
+  karuselka:
     command: python
-    args: ["/path/to/frameforge/mcp_server.py"]
+    args: ["/path/to/karuselka/mcp_server.py"]
     env:
-      FRAMEFORGE_SESSION_ROOT: "~/.hermes/frameforge/sessions"
+      KARUSELKA_SESSION_ROOT: "~/.hermes/karuselka/sessions"
 ```
 
 ### MCP Tools
@@ -38,7 +38,7 @@ mcp_servers:
 ```python
 # In Hermes Agent session
 # Create carousel
-mcp_frameforge_create_carousel(
+mcp_karuselka_create_carousel(
     topic="AI marketing tips",
     platform="instagram",
     reference="@neilpatel",
@@ -46,21 +46,21 @@ mcp_frameforge_create_carousel(
 )
 
 # Get status
-mcp_frameforge_get_carousel_status(session_id="20250115-143022")
+mcp_karuselka_get_carousel_status(session_id="20250115-143022")
 
 # List sessions
-mcp_frameforge_list_carousel_sessions(limit=10)
+mcp_karuselka_list_carousel_sessions(limit=10)
 
 # Get assets
-mcp_frameforge_get_carousel_assets(session_id="20250115-143022")
+mcp_karuselka_get_carousel_assets(session_id="20250115-143022")
 
 # Publish
-mcp_frameforge_publish_carousel(session_id="20250115-143022")
+mcp_karuselka_publish_carousel(session_id="20250115-143022")
 ```
 
 ## CLI
 
-FrameForge provides a command-line interface for manual carousel creation and management.
+Karuselka provides a command-line interface for manual carousel creation and management.
 
 ### Installation
 
@@ -69,7 +69,7 @@ FrameForge provides a command-line interface for manual carousel creation and ma
 pip install -e .
 
 # Or run directly
-python frameforge.py --help
+python karuselka.py --help
 ```
 
 ### CLI Commands
@@ -86,32 +86,32 @@ python frameforge.py --help
 
 ```bash
 # Create new carousel
-frameforge create --topic "AI marketing tips" --platform instagram
+karuselka create --topic "AI marketing tips" --platform instagram
 
 # Create with reference and CTA
-frameforge create \
+karuselka create \
   --topic "Facebook ads strategy" \
   --platform meta-ads \
   --reference "@garyvee" \
   --cta "Book free audit"
 
 # Create dry run (text only)
-frameforge create --topic "AI SEO tips" --platform instagram --dry-run
+karuselka create --topic "AI SEO tips" --platform instagram --dry-run
 
 # Get session status
-frameforge status --session-id 20250115-143022
+karuselka status --session-id 20250115-143022
 
 # List all sessions
-frameforge list --limit 10
+karuselka list --limit 10
 
 # List Instagram sessions only
-frameforge list --platform instagram --limit 10
+karuselka list --platform instagram --limit 10
 
 # Get asset URLs
-frameforge assets --session-id 20250115-143022
+karuselka assets --session-id 20250115-143022
 
 # Publish carousel
-frameforge publish --session-id 20250115-143022
+karuselka publish --session-id 20250115-143022
 ```
 
 ### CLI Command Reference
@@ -121,7 +121,7 @@ frameforge publish --session-id 20250115-143022
 Create a new carousel session.
 
 ```bash
-frameforge create --topic TOPIC --platform PLATFORM [OPTIONS]
+karuselka create --topic TOPIC --platform PLATFORM [OPTIONS]
 ```
 
 **Required:**
@@ -143,7 +143,7 @@ frameforge create --topic TOPIC --platform PLATFORM [OPTIONS]
 Get carousel session status.
 
 ```bash
-frameforge status --session-id SESSION_ID
+karuselka status --session-id SESSION_ID
 ```
 
 Shows completion status of all pipeline steps.
@@ -153,7 +153,7 @@ Shows completion status of all pipeline steps.
 List carousel sessions.
 
 ```bash
-frameforge list [OPTIONS]
+karuselka list [OPTIONS]
 ```
 
 **Optional:**
@@ -164,7 +164,7 @@ frameforge list [OPTIONS]
 Get carousel asset URLs.
 
 ```bash
-frameforge assets --session-id SESSION_ID
+karuselka assets --session-id SESSION_ID
 ```
 
 Shows URLs for all 9 slides and video (if generated).
@@ -174,7 +174,7 @@ Shows URLs for all 9 slides and video (if generated).
 Publish carousel session.
 
 ```bash
-frameforge publish --session-id SESSION_ID
+karuselka publish --session-id SESSION_ID
 ```
 
 Triggers platform-specific publish via MCP or API.
@@ -185,7 +185,7 @@ Both MCP server and CLI use these environment variables:
 
 ```bash
 # Session storage
-FRAMEFORGE_SESSION_ROOT=~/.hermes/frameforge/sessions
+KARUSELKA_SESSION_ROOT=~/.hermes/karuselka/sessions
 
 # Research services
 TAVILY_API_KEY=tvly-...
@@ -215,11 +215,11 @@ Add to Hermes config:
 
 ```yaml
 mcp_servers:
-  frameforge:
+  karuselka:
     command: python
-    args: ["/path/to/frameforge/mcp_server.py"]
+    args: ["/path/to/karuselka/mcp_server.py"]
     env:
-      FRAMEFORGE_SESSION_ROOT: "~/.hermes/frameforge/sessions"
+      KARUSELKA_SESSION_ROOT: "~/.hermes/karuselka/sessions"
       KIE_API_KEY: "${KIE_API_KEY}"
 ```
 
@@ -227,7 +227,7 @@ Use in agent sessions:
 
 ```python
 # Create carousel
-mcp_frameforge_create_carousel(
+mcp_karuselka_create_carousel(
     topic="AI marketing automation",
     platform="instagram",
     reference="@neilpatel"
@@ -240,16 +240,16 @@ For manual carousel creation or automation scripts:
 
 ```bash
 # Create and track
-SESSION_ID=$(frameforge create --topic "X" --platform instagram --dry-run | grep "Session ID" | cut -d: -f2 | xargs)
+SESSION_ID=$(karuselka create --topic "X" --platform instagram --dry-run | grep "Session ID" | cut -d: -f2 | xargs)
 
 # Monitor progress
 while true; do
-  frameforge status --session-id $SESSION_ID
+  karuselka status --session-id $SESSION_ID
   sleep 10
 done
 
 # Get assets when done
-frameforge assets --session-id $SESSION_ID
+karuselka assets --session-id $SESSION_ID
 ```
 
 ### Cron Job Integration
@@ -258,7 +258,7 @@ Schedule carousel creation:
 
 ```bash
 # Daily carousel creation at 10 AM
-0 10 * * * cd /path/to/frameforge && frameforge create --topic "Daily tip" --platform instagram --auto-publish >> /var/log/frameforge.log 2>&1
+0 10 * * * cd /path/to/karuselka && karuselka create --topic "Daily tip" --platform instagram --auto-publish >> /var/log/karuselka.log 2>&1
 ```
 
 ## Troubleshooting
@@ -272,7 +272,7 @@ pip install -r mcp_requirements.txt
 
 Check Hermes config:
 ```bash
-hermes config get mcp_servers.frameforge
+hermes config get mcp_servers.karuselka
 ```
 
 ### CLI Not Found
@@ -284,7 +284,7 @@ pip install -e .
 
 Or run directly:
 ```bash
-python /path/to/frameforge/frameforge.py --help
+python /path/to/karuselka/karuselka.py --help
 ```
 
 ### Session Not Found
@@ -292,14 +292,14 @@ python /path/to/frameforge/frameforge.py --help
 Use full session ID or timestamp:
 ```bash
 # Use full timestamp
-frameforge status --session-id 20250115-143022
+karuselka status --session-id 20250115-143022
 
 # Or partial match
-frameforge status --session-id 143022
+karuselka status --session-id 143022
 ```
 
 ## Next Steps
 
-- See [README.md](README.md) for full FrameForge documentation
+- See [README.md](README.md) for full Karuselka documentation
 - See [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) for roadmap
 - See [AGENT-PIPELINE.md](AGENT-PIPELINE.md) for pipeline details

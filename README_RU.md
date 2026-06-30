@@ -1,4 +1,4 @@
-# FrameForge
+# Karuselka
 
 Агентская система для создания социальных каруселей: ресерч, текст, дизайн, генерация изображений/видео, QA, загрузка и публикация.
 
@@ -7,8 +7,8 @@
 ## Быстрый старт
 
 ```bash
-git clone https://github.com/zaharenok/frameforge.git
-cd frameforge
+git clone https://github.com/zaharenok/karuselka.git
+cd karuselka
 pip install -r scripts/requirements.txt
 cp .env.example .env  # Добавьте свои API ключи
 ```
@@ -20,7 +20,7 @@ cp .env.example .env  # Добавьте свои API ключи
 
 Публиковать:
 ```bash
-/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
+/carousel-publish --session-id ~/.hermes/karuselka/sessions/{timestamp}/
 ```
 
 ## Возможности
@@ -36,7 +36,7 @@ cp .env.example .env  # Добавьте свои API ключи
 
 ## Архитектура
 
-FrameForge использует оркестрацию Hermes Agent со специализированными субагентами:
+Karuselka использует оркестрацию Hermes Agent со специализированными субагентами:
 
 | Агент | Роль | Инструменты |
 |-------|------|-------------|
@@ -100,8 +100,8 @@ research → copy → design → image-prompt → generate → slice → motion 
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/zaharenok/frameforge.git
-cd frameforge
+git clone https://github.com/zaharenok/karuselka.git
+cd karuselka
 ```
 
 2. Установите зависимости:
@@ -142,7 +142,7 @@ hermes skills add skills/carusel-researcher/
 ### Опубликовать карусель
 
 ```bash
-/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
+/carousel-publish --session-id ~/.hermes/karuselka/sessions/{timestamp}/
 ```
 
 ### Специфика платформ

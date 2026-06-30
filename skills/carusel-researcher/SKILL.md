@@ -221,5 +221,5 @@ TAVILY_API_KEY=tvly-...
 BRAVE_API_KEY=...
 
 # Session Storage
-SESSION_ROOT=~/.hermes/frameforge/sessions/{timestamp}/
+SESSION_ROOT=~/.hermes/karuselka/sessions/{timestamp}/
 ```

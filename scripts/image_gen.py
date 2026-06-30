@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Image generation for FrameForge carousel.
+Image generation for Karuselka carousel.
 Supports Kie.ai, OpenRouter, fal.ai, and local models (Ollama).
 """
 
@@ -18,7 +18,7 @@ class ImageGenerator:
 
     def __init__(self):
         self.provider = os.getenv("IMAGE_GEN_PROVIDER", "kie")
-        self.session_root = Path(os.getenv("SESSION_ROOT", "~/.hermes/frameforge/sessions/current"))
+        self.session_root = Path(os.getenv("SESSION_ROOT", "~/.hermes/karuselka/sessions/current"))
         self.session_root = self.session_root.expanduser()
 
     def generate_master_image(self, prompt: str, style_config: dict) -> Path:
@@ -119,8 +119,8 @@ class ImageGenerator:
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/zaharenok/frameforge",
-            "X-Title": "FrameForge"
+            "HTTP-Referer": "https://github.com/zaharenok/karuselka",
+            "X-Title": "Karuselka"
         }
         payload = {
             "prompt": prompt,

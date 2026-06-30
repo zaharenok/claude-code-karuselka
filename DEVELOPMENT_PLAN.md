@@ -1,13 +1,8 @@
-# Development Plan for FrameForge
+# Development Plan for Karuselka
 
 ## Immediate Tasks
 
-### 1. Rename and rebrand
-- [ ] Rename from "claude-code-karuselka" to "frameforge"
-- [ ] Update repository name on GitHub
-- [ ] Update all references in code
-
-### 2. Documentation overhaul
+### 1. Documentation overhaul
 - [ ] Write primary README.md in English
 - [ ] Create README_RU.md for Russian users
 - [ ] Update HERMES_AGENTS.md with expanded services

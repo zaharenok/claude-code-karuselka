@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-FrameForge CLI
+Karuselka CLI
 Command-line interface for social media carousel creation.
 """
 
@@ -21,11 +21,11 @@ except ImportError:
     print("Warning: Some modules not available. Install dependencies with: pip install -r scripts/requirements.txt")
 
 
-class FrameForgeCLI:
-    """FrameForge CLI handler."""
+class KaruselkaCLI:
+    """Karuselka CLI handler."""
 
     def __init__(self):
-        self.session_root = Path(os.getenv("FRAMEFORGE_SESSION_ROOT", "~/.hermes/frameforge/sessions"))
+        self.session_root = Path(os.getenv("KARUSELKA_SESSION_ROOT", "~/.hermes/karuselka/sessions"))
         self.session_root = self.session_root.expanduser()
 
     def create_carousel(self, args):
@@ -234,7 +234,7 @@ class FrameForgeCLI:
         upload_json = session_path / "10-upload.json"
         if not upload_json.exists():
             print(f"❌ Session not ready to publish. Upload file missing.")
-            print(f"   Run 'frameforge generate' first.")
+            print(f"   Run 'karuselka generate' first.")
             return
 
         # Read upload URLs
@@ -265,27 +265,27 @@ class FrameForgeCLI:
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="FrameForge - Social Media Carousel CLI",
+        description="Karuselka - Social Media Carousel CLI",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   # Create new carousel
-  frameforge create --topic "AI marketing tips" --platform instagram
+  karuselka create --topic "AI marketing tips" --platform instagram
 
   # Create with reference and CTA
-  frameforge create --topic "Facebook ads" --platform meta-ads --reference "@garyvee" --cta "Book audit"
+  karuselka create --topic "Facebook ads" --platform meta-ads --reference "@garyvee" --cta "Book audit"
 
   # Get session status
-  frameforge status --session-id 20250115-143022
+  karuselka status --session-id 20250115-143022
 
   # List all sessions
-  frameforge list --limit 10
+  karuselka list --limit 10
 
   # Get asset URLs
-  frameforge assets --session-id 20250115-143022
+  karuselka assets --session-id 20250115-143022
 
   # Publish carousel
-  frameforge publish --session-id 20250115-143022
+  karuselka publish --session-id 20250115-143022
         """
     )
 
@@ -326,7 +326,7 @@ Examples:
         parser.print_help()
         return
 
-    cli = FrameForgeCLI()
+    cli = KaruselkaCLI()
 
     if args.command == "create":
         cli.create_carousel(args)

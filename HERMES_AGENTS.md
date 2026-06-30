@@ -1,6 +1,6 @@
 # Hermes Agent Configuration
 
-This directory contains Hermes Agent configurations for FrameForge agents.
+This directory contains Hermes Agent configurations for Karuselka agents.
 
 Each agent is defined as a Hermes skill that can be invoked via `delegate_task`.
 
@@ -26,7 +26,7 @@ Each agent is defined as a Hermes skill that can be invoked via `delegate_task`.
 Add these skills to Hermes:
 
 ```bash
-cd frameforge
+cd karuselka
 hermes skills add skills/director-carusel/
 hermes skills add skills/carusel-researcher/
 hermes skills add skills/carusel-copywriter/

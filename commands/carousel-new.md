@@ -1,6 +1,6 @@
 ---
 name: carousel-new
-description: Create new social media carousel via FrameForge pipeline
+description: Create new social media carousel via Karuselka pipeline
 version: 1.0.0
 author: zaharenok
 ---
@@ -112,7 +112,7 @@ Creates a new social media carousel (9 slides, 3×3 grid) through the agent pipe
 
 ## Pipeline
 
-1. **Init**: Create session at `~/.hermes/frameforge/sessions/{timestamp}/`
+1. **Init**: Create session at `~/.hermes/karuselka/sessions/{timestamp}/`
 2. **Research**: Delegate `carusel-researcher` → research via Tavily/Brave
 3. **Copy**: Delegate `carusel-copywriter` → text for 9 slides + caption
 4. **Design**: Delegate `carusel-designer` → visual system
@@ -149,7 +149,7 @@ Creates a new social media carousel (9 slides, 3×3 grid) through the agent pipe
 
 ## Output Files
 
-Session created at `~/.hermes/frameforge/sessions/{timestamp}/`:
+Session created at `~/.hermes/karuselka/sessions/{timestamp}/`:
 
 ```
 ├── 00-brief.md          # Brief
@@ -192,12 +192,12 @@ INSTAGRAM_MCP_ENDPOINT=http://localhost:3000
 META_ADS_ACCOUNT_ID=...
 
 # Session Storage
-SESSION_ROOT=~/.hermes/frameforge/sessions
+SESSION_ROOT=~/.hermes/karuselka/sessions
 ```
 
 ## After Creation
 
 To publish:
 ```bash
-/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
+/carousel-publish --session-id ~/.hermes/karuselka/sessions/{timestamp}/
 ```

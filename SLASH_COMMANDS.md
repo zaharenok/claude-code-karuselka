@@ -67,13 +67,13 @@ Publishes a ready carousel.
 ### Syntax
 
 ```bash
-/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
+/carousel-publish --session-id ~/.hermes/karuselka/sessions/{timestamp}/
 ```
 
 ### Examples
 
 ```bash
-/carousel-publish --session-id ~/.hermes/frameforge/sessions/2025-01-15-143022/
+/carousel-publish --session-id ~/.hermes/karuselka/sessions/2025-01-15-143022/
 ```
 
 ## Implementation via delegate_task
@@ -107,7 +107,7 @@ Each subagent uses `delegate_task` for the next step.
 
 ## Session Structure
 
-Each session is stored at `~/.hermes/frameforge/sessions/{timestamp}/`:
+Each session is stored at `~/.hermes/karuselka/sessions/{timestamp}/`:
 
 ```
 ├── 00-brief.md          # Initial brief
