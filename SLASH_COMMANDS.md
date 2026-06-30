@@ -1,8 +1,8 @@
 # Hermes Slash Commands Integration
 
-## Добавление команд
+## Installation
 
-Копируйте команды в `~/.hermes/commands/`:
+Copy commands to `~/.hermes/commands/`:
 
 ```bash
 cp commands/carousel-new.md ~/.hermes/commands/
@@ -11,50 +11,80 @@ cp commands/carousel-publish.md ~/.hermes/commands/
 
 ## /carousel-new
 
-Создаёт новую Instagram-карусель через пайплайн агентов.
+Creates a new social media carousel through the agent pipeline.
 
-### Параметры
-
-```bash
-/carousel-new --topic "Тема" --reference "@аккаунт" --cta "CTA" --audience "Аудитория"
-```
-
-### Примеры
+### Syntax
 
 ```bash
-# Базовое
-/carousel-new --topic "AI automation tools"
-
-# С референсом
-/carousel-new --topic "Facebook ads" --reference "@garyvee" --cta "Book audit"
-
-# Dry run (только текст)
-/carousel-new --topic "AI SEO" --dry-run
+/carousel-new --topic "Topic" --platform [instagram|meta-ads|facebook|linkedin] --reference "@account" --cta "CTA" --audience "Audience" --research-service [tavily|brave] --image-provider [kie|openrouter|fal|local]
 ```
+
+### Examples
+
+```bash
+# Instagram with default settings
+/carousel-new --topic "AI automation tools" --platform instagram
+
+# Meta Ads with reference and CTA
+/carousel-new --topic "Facebook ads strategy" --platform meta-ads --reference "@garyvee" --cta "Book audit"
+
+# LinkedIn with Brave Search and fal.ai
+/carousel-new --topic "LinkedIn growth" --platform linkedin --reference "@justinwelsh" --research-service brave --image-provider fal
+
+# Dry run (text only)
+/carousel-new --topic "AI SEO tips" --platform instagram --dry-run
+```
+
+### Platform Options
+
+| Platform | Aspect Ratio | Video Support |
+|----------|--------------|---------------|
+| instagram | 1:1 or 4:5 | Yes (loop 5s) |
+| meta-ads | 1:1, 4:5, or 9:16 | Optional |
+| facebook | 1:1 | Optional |
+| linkedin | 1:1 or 16:9 | Not recommended |
+
+### Research Services
+
+| Service | API Key | Description |
+|---------|---------|-------------|
+| tavily | `TAVILY_API_KEY` | Web research, competitor analysis |
+| brave | `BRAVE_API_KEY` | Privacy-focused web search |
+
+### Image Generation Providers
+
+| Provider | API Key | Description |
+|----------|---------|-------------|
+| kie | `KIE_API_KEY` | Fast, high-quality (recommended) |
+| openrouter | `OPENROUTER_API_KEY` | Flux, Stable Diffusion, more |
+| fal | `FAL_API_KEY` | Fast inference |
+| local | `LOCAL_MODEL` | Ollama with image models |
 
 ## /carousel-publish
 
-Публикует готовую карусель.
+Publishes a ready carousel.
 
-### Параметры
-
-```bash
-/carousel-publish --session-id ~/.hermes/karuselka/sessions/{timestamp}/
-```
-
-### Примеры
+### Syntax
 
 ```bash
-/carousel-publish --session-id ~/.hermes/karuselka/sessions/2025-01-15-143022/
+/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
 ```
 
-## Реализация через delegate_task
+### Examples
+
+```bash
+/carousel-publish --session-id ~/.hermes/frameforge/sessions/2025-01-15-143022/
+```
+
+## Implementation via delegate_task
+
+When you run:
 
 ```
-/carousel-new --topic "X"
+/carousel-new --topic "X" --platform instagram
 ```
 
-делегирует в `skills/director-carusel/`, который затем:
+It delegates to `skills/director-carusel/`, which then:
 
 ```python
 delegate_task(
@@ -62,11 +92,57 @@ delegate_task(
     skills=["carusel-researcher"],
     context=f"""
     Topic: {topic}
+    Platform: {platform}
     Reference: {reference}
+    CTA: {cta}
+    Audience: {audience}
+    Research service: {research_service}
     Session root: {SESSION_ROOT}
     """,
     toolsets=["web", "file"]
 )
 ```
 
-Каждый субагент использует `delegate_task` для следующего шага.
+Each subagent uses `delegate_task` for the next step.
+
+## Session Structure
+
+Each session is stored at `~/.hermes/frameforge/sessions/{timestamp}/`:
+
+```
+├── 00-brief.md          # Initial brief
+├── 01-research.md       # Research report
+├── 02-copy.md           # Copy for 9 slides
+├── 03-design.md         # Visual system
+├── 04-prompts.md        # Image generation prompts
+├── 05-master.png        # Master image
+├── 06-slices/           # 9 sliced slides
+├── 07-motion.md         # Animation scenario
+├── 08-anim-01.mp4       # Video slide-01
+├── 09-qa.md             # QA report
+├── 10-upload.json       # Uploaded asset URLs
+├── 11-publish.md        # Publish result
+└── fragments/           # Summary fragments
+```
+
+## Platform-Specific Notes
+
+### Instagram
+- Requires Instagram MCP or Make automation
+- Video animation for slide-01 is recommended
+- Hashtag optimization is important
+
+### Meta Ads
+- Requires Meta Ads API access
+- Aspect ratio flexibility (1:1, 4:5, 9:16)
+- Compliance with ad policies
+
+### Facebook
+- Requires Facebook API access
+- Square format only (1:1)
+- Organic posting focus
+
+### LinkedIn
+- Requires LinkedIn API access
+- Professional tone
+- Limited video support

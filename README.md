@@ -1,99 +1,242 @@
-# Claude Code Karuselka
+# FrameForge
 
-Агентская система Claude Code для создания 9-слайдовых Instagram-каруселей: research, copy, design, image/video generation, QA, upload and MCP publish.
+Agent system for creating social media carousels: research, copy, design, image/video generation, QA, upload, and publish.
 
-## Отличия от оригинала (Cursor)
+Supported platforms: Instagram, Meta Ads, Facebook, LinkedIn.
 
-- **Claude Code native**: Использует Claude Code вместо Cursor
-- **Hermes agents**: Интеграция с Hermes Agent через delegate_task
-- **Tavily research**: Встроенный ресерч через Tavily MCP
-- **Hermes slash commands**: Интеграция с Hermes CLI (/carousel-new, /carousel-publish)
-- **Multi-provider image gen**: Поддержка Kie.ai, OpenRouter (Flux/SD), локальных моделей
-- **Orchestration via Hermes**: Автоматическое делегирование субагентов
+## Quick Start
 
-## Карта функционала
-
-| Зона | Компоненты | Назначение |
-| --- | --- | --- |
-| Оркестрация | `rules/`, `agents/director.md`, `skills/director-carusel/` | Управляет пайплайном и handoff между агентами |
-| Ресерч | `agents/carusel-researcher.md`, `skills/carusel-researcher/` | Анализ темы, аудитории, конкурентов через Tavily |
-| Текст | `agents/carusel-copywriter.md`, `skills/carusel-copywriter/` | 9 слайдов, caption, CTA и структура сторителлинга |
-| Дизайн | `agents/carusel-designer.md`, `skills/carusel-designer/`, `shared/CAROUSEL_DESIGN_SPEC.md` | Визуальная система, композиция, style lock |
-| Image prompt | `agents/carusel-image-prompter.md`, `skills/carusel-image-prompter/` | JSON/MD prompt для image generation, 9 panel briefs |
-| Генерация и slice | `agents/carusel-slice.md`, `scripts/image_gen.py`, `scripts/slice_grid.py` | Master image 3:4 @ 4K и нарезка 3×3 |
-| Motion | `agents/carusel-motion-director.md`, `agents/carusel-animate.md`, `scripts/video_gen.py` | Сценарий анимации и MP4 для первого слайда |
-| QA | `agents/carusel-design-guardian.md`, `scripts/video_frame_qa.py` | Проверка дизайна, bleed, aspect ratio, frame0 fidelity |
-| Upload | `agents/carusel-upload.md`, `scripts/upload_carousel_assets.py` | HTTPS upload, run-scoped paths, MP4 normalization |
-| Publish | `agents/carusel-publish.md`, `scripts/publish_preflight.py` | MCP publish без blind retry и дублей |
-| Fixic | `agents/carusel-fixic.md`, `skills/carusel-fixic/` | Разбор инцидентов и durable fixes |
-| Общие контракты | `shared/` | Playbook, API contracts, pitfalls, publish rules |
-
-## Требования
-
-- Claude Code CLI
-- Hermes Agent с delegate_task
-- Python 3.10+
-- Image generation API (Kie.ai, OpenRouter, или локальная модель)
-- `ffmpeg` и `ffprobe` для проверки/нормализации MP4
-- Tavily API key для ресерча (опционально)
-- MCP-интеграция для публикации в Instagram
-
-## Установка
-
-1. Склонируйте репозиторий:
 ```bash
-git clone https://github.com/zaharenok/claude-code-karuselka.git
-cd claude-code-karuselka
+git clone https://github.com/zaharenok/frameforge.git
+cd frameforge
+pip install -r scripts/requirements.txt
+cp .env.example .env  # Add your API keys
 ```
 
-2. Установите зависимости Python:
+Create a carousel:
+```bash
+/carousel-new --topic "AI marketing tips" --platform instagram --reference "@neilpatel"
+```
+
+Publish:
+```bash
+/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
+```
+
+## Features
+
+- **Multi-platform**: Instagram, Meta Ads, Facebook, LinkedIn
+- **Full pipeline**: Research → Copy → Design → Image/Video generation → QA → Upload → Publish
+- **Research integration**: Tavily MCP, Brave Search
+- **Image generation**: Kie.ai, OpenRouter, fal.ai, local models
+- **Video generation**: Grok Video, fal.ai
+- **Storage**: Kie.ai, S3, local
+- **Hermes integration**: Slash commands, delegate_task orchestration
+
+## Architecture
+
+FrameForge uses Hermes Agent orchestration with specialized subagents:
+
+| Agent | Role | Tools |
+|-------|------|-------|
+| researcher | Market research, competitor analysis | Tavily MCP, Brave Search |
+| copywriter | 9-slide copy + caption + CTA | — |
+| designer | Visual system 3×3 grid | — |
+| image-prompter | Image generation prompts | — |
+| slice | Master image generation + slicing | Kie.ai / OpenRouter / fal.ai / local |
+| motion-director | Animation scenario | — |
+| animate | Loop video for slide-01 | Grok Video / fal.ai |
+| design-guardian | QA: design, bleed, aspect ratio | — |
+| upload | Asset upload to HTTPS storage | Kie.ai / S3 / local |
+| publish | Publish via MCP | Instagram / Meta Ads / Facebook / LinkedIn |
+| fixic | Incident resolution | — |
+
+## Pipeline
+
+```
+research → copy → design → image-prompt → generate → slice → motion → animate → QA → upload → publish → fixic
+```
+
+Full details in [AGENT-PIPELINE.md](AGENT-PIPELINE.md).
+
+## Supported Services
+
+### Research
+- **Tavily MCP**: Web research, competitor analysis, trend detection
+- **Brave Search**: Alternative web search with privacy focus
+
+### Image Generation
+- **Kie.ai**: Fast image generation (get started with [referral link](https://kie.ai?ref=80779f6a33a1f5311277ef1c44c0f665))
+- **OpenRouter**: Access to Flux, Stable Diffusion, and more
+- **fal.ai**: Fast inference for image models
+- **Local**: Ollama with supported image models
+
+### Video Generation
+- **Grok Video**: Loop video for first slide
+- **fal.ai**: Alternative video generation
+
+### Upload Storage
+- **Kie.ai**: Integrated CDN
+- **S3**: AWS S3 or compatible
+- **Local**: File system storage
+
+### Publishing
+- **Instagram**: Via MCP or Make automation
+- **Meta Ads**: Carousel ad creation
+- **Facebook**: Organic posts
+- **LinkedIn**: Professional posts
+
+## Installation
+
+### Prerequisites
+- Python 3.10+
+- Claude Code CLI (optional, for native mode)
+- Hermes Agent with delegate_task support
+- API keys for chosen services
+
+### Setup
+
+1. Clone repository:
+```bash
+git clone https://github.com/zaharenok/frameforge.git
+cd frameforge
+```
+
+2. Install Python dependencies:
 ```bash
 pip install -r scripts/requirements.txt
 ```
 
-3. Создайте `.env`:
-```env
-TAVILY_API_KEY=your_tavily_api_key_here
-IMAGE_GEN_PROVIDER=kie  # kie, openrouter, or local
-IMAGE_GEN_API_KEY=your_image_gen_api_key_here
-UPLOAD_STORAGE=kie  # kie, s3, or local
-```
-
-4. Добавьте слэш-команды Hermes:
+3. Configure environment:
 ```bash
-hermes skills install carousel-new
-hermes skills install carousel-publish
+cp .env.example .env
+# Edit .env with your API keys
 ```
 
-## Использование
-
-Создание новой карусели:
+4. Install Hermes skills (optional, if not using slash commands):
 ```bash
-hermes /carousel-new --topic "Как AI меняет маркетинг" --reference "@neilpatel"
+hermes skills add skills/director-carusel/
+hermes skills add skills/carusel-researcher/
+# ... add other skills as needed
 ```
 
-Публикация готовой карусели:
+## Usage
+
+### Create carousel
+
 ```bash
-hermes /carousel-publish --session-id carusel-memory/session-2025-01-15/
+/carousel-new --topic "AI marketing tips" --platform instagram --reference "@neilpatel"
 ```
 
-## Пайплайн
+Parameters:
+- `--topic`: Carousel topic (required)
+- `--platform`: Platform (instagram, meta-ads, facebook, linkedin)
+- `--reference`: Reference account (optional)
+- `--cta`: Call-to-action (optional)
+- `--audience`: Target audience (optional)
+- `--auto-publish`: Publish after QA (optional)
+- `--dry-run`: Skip image generation (optional)
 
-```
-director
--> researcher (Tavily)
--> copywriter
--> designer
--> image-prompter
--> slice
--> motion-director
--> animate
--> design-guardian
--> upload
--> publish
--> fixic
+### Publish carousel
+
+```bash
+/carousel-publish --session-id ~/.hermes/frameforge/sessions/{timestamp}/
 ```
 
-## Лицензия
+### Platform-specific options
 
-MIT
+**Instagram**: Standard 3×3 grid, 1080×1080 or 1080×1350 per slide
+
+**Meta Ads**: Aspect ratios 1080×1080, 1080×1350, or 1080×1920
+
+**Facebook**: 1080×1080 square format
+
+**LinkedIn**: 1080×1080 or 1200×627 (landscape)
+
+## Session Structure
+
+```
+~/.hermes/frameforge/sessions/{timestamp}/
+├── 00-brief.md          # Initial brief
+├── 01-research.md       # Research report
+├── 02-copy.md           # Copy for 9 slides + caption
+├── 03-design.md         # Visual system
+├── 04-prompts.md        # Image generation prompts
+├── 05-master.png        # Master image
+├── 06-slices/           # 9 sliced slides
+├── 07-motion.md         # Animation scenario
+├── 08-anim-01.mp4       # Animated slide-01
+├── 09-qa.md             # QA report
+├── 10-upload.json       # Uploaded asset URLs
+├── 11-publish.md        # Publish result
+└── pipeline-fix-queue.md # Incident queue
+```
+
+## Configuration
+
+### Research services
+```bash
+# Tavily MCP (primary)
+TAVILY_API_KEY=tvly-...
+
+# Brave Search (alternative)
+BRAVE_API_KEY=...
+```
+
+### Image generation
+```bash
+IMAGE_GEN_PROVIDER=kie  # kie, openrouter, fal, local
+
+# Kie.ai (recommended, fast)
+KIE_API_KEY=...
+
+# OpenRouter (access to many models)
+OPENROUTER_API_KEY=...
+
+# fal.ai (fast inference)
+FAL_API_KEY=...
+
+# Local (Ollama)
+LOCAL_MODEL=gemma2:latest
+```
+
+### Storage
+```bash
+UPLOAD_STORAGE=kie  # kie, s3, local
+
+# S3 config
+S3_BUCKET=your-bucket
+S3_REGION=us-east-1
+S3_ACCESS_KEY=...
+S3_SECRET_KEY=...
+```
+
+### Publishing
+```bash
+# Instagram MCP
+INSTAGRAM_MCP_ENDPOINT=http://localhost:3000
+INSTAGRAM_ACCESS_TOKEN=...
+
+# Meta Ads
+META_ADS_ACCOUNT_ID=...
+META_ADS_ACCESS_TOKEN=...
+```
+
+## Development
+
+See [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) for roadmap.
+
+## Contributing
+
+Contributions welcome! Please read [HERMES_AGENTS.md](HERMES_AGENTS.md) for skill development guidelines.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+## Acknowledgments
+
+- Original [Karuselka](https://github.com/Horosheff/Karuselka) for Cursor
+- Hermes Agent framework
+- Tavily for research API
+- Kie.ai for image generation (get started with [referral link](https://kie.ai?ref=80779f6a33a1f5311277ef1c44c0f665))

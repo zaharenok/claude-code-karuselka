@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Image generation for Karuselka carousel.
-Supports Kie.ai, OpenRouter, and local models (Ollama).
+Image generation for FrameForge carousel.
+Supports Kie.ai, OpenRouter, fal.ai, and local models (Ollama).
 """
 
 import os
@@ -18,7 +18,7 @@ class ImageGenerator:
 
     def __init__(self):
         self.provider = os.getenv("IMAGE_GEN_PROVIDER", "kie")
-        self.session_root = Path(os.getenv("SESSION_ROOT", "~/.hermes/karuselka/sessions/current"))
+        self.session_root = Path(os.getenv("SESSION_ROOT", "~/.hermes/frameforge/sessions/current"))
         self.session_root = self.session_root.expanduser()
 
     def generate_master_image(self, prompt: str, style_config: dict) -> Path:
@@ -38,6 +38,8 @@ class ImageGenerator:
             return self._generate_via_kie(full_prompt)
         elif self.provider == "openrouter":
             return self._generate_via_openrouter(full_prompt)
+        elif self.provider == "fal":
+            return self._generate_via_fal(full_prompt)
         elif self.provider == "local":
             return self._generate_locally(full_prompt)
         else:
@@ -117,8 +119,8 @@ class ImageGenerator:
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/zaharenok/claude-code-karuselka",
-            "X-Title": "Claude Code Karuselka"
+            "HTTP-Referer": "https://github.com/zaharenok/frameforge",
+            "X-Title": "FrameForge"
         }
         payload = {
             "prompt": prompt,
@@ -133,6 +135,41 @@ class ImageGenerator:
 
         # Download image
         image_url = data["data"][0]["url"]
+        image_response = requests.get(image_url, timeout=60)
+        image_response.raise_for_status()
+
+        output_path = self.session_root / "05-master.png"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_bytes(image_response.content)
+
+        return output_path
+
+    def _generate_via_fal(self, prompt: str) -> Path:
+        """Generate via fal.ai (Flux)."""
+        import fal_client
+
+        api_key = os.getenv("FAL_API_KEY")
+        if not api_key:
+            raise ValueError("FAL_API_KEY not set")
+
+        # Submit generation request
+        handler = fal_client.submit(
+            "fal-ai/flux-pro-v1.1-ultra",
+            arguments={
+                "prompt": prompt,
+                "image_size": "landscape_16_9",
+                "num_inference_steps": 28,
+                "num_images": 1,
+                "enable_safety_checker": True
+            },
+            key=api_key
+        )
+
+        # Wait for result
+        result = handler.get()
+
+        # Download image
+        image_url = result["images"][0]["url"]
         image_response = requests.get(image_url, timeout=60)
         image_response.raise_for_status()
 
