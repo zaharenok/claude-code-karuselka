@@ -39,9 +39,9 @@ Creates a new social media carousel through the agent pipeline.
 
 | Platform | Aspect Ratio | Video Support |
 |----------|--------------|---------------|
-| instagram | 1:1 or 4:5 | Yes (loop 5s) |
-| meta-ads | 1:1, 4:5, or 9:16 | Optional |
-| facebook | 1:1 | Optional |
+| instagram | 4:5 (default) or 1:1 | Yes (Seedance 1.5 Pro, 5s loop) |
+| meta-ads | 4:5 (default) or 1:1, 9:16 | Optional (Seedance 1.5 Pro, 5s loop) |
+| facebook | 1:1 | Optional (Seedance 1.5 Pro, 5s loop) |
 | linkedin | 1:1 or 16:9 | Not recommended |
 
 ### Research Services

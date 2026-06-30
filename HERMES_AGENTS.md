@@ -66,7 +66,8 @@ delegate_task(
 - **Local**: Via `scripts/image_gen.py` with `IMAGE_GEN_PROVIDER=local`
 
 ### Video Generation
-- **Grok Video**: Via `scripts/video_gen.py` with `VIDEO_GEN_PROVIDER=grok`
+- **Seedance 1.5 Pro (ByteDance)**: Via `scripts/seedance_video_gen.py` — cheapest option on Kie.ai ($0.0175/s, 720p, no audio)
+- **Grok Video**: Via `scripts/grok_video_gen.py` (requires separate GROK_API_KEY)
 - **fal.ai**: Via `scripts/video_gen.py` with `VIDEO_GEN_PROVIDER=fal`
 
 ### Upload Storage

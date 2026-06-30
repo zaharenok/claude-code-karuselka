@@ -72,7 +72,8 @@ Full details in [AGENT-PIPELINE.md](AGENT-PIPELINE.md).
 - **Local**: Ollama with supported image models
 
 ### Video Generation
-- **Grok Video**: Loop video for first slide
+- **Seedance 1.5 Pro (ByteDance)**: Cheapest option on Kie.ai ($0.0175/s, 720p, 5s loop, no audio) — recommended
+- **Grok Video**: Loop video for first slide (requires separate API key)
 - **fal.ai**: Alternative video generation
 
 ### Upload Storage
@@ -145,13 +146,13 @@ Parameters:
 
 ### Platform-specific options
 
-**Instagram**: Standard 3×3 grid, 1080×1080 or 1080×1350 per slide
+**Instagram**: Standard 3×3 grid, 1080×1350 (default) or 1080×1080 per slide, video: Seedance 1.5 Pro (5s loop)
 
-**Meta Ads**: Aspect ratios 1080×1080, 1080×1350, or 1080×1920
+**Meta Ads**: Aspect ratios 1080×1350 (default) or 1080×1080, 1080×1920, video: Seedance 1.5 Pro (5s loop, optional)
 
-**Facebook**: 1080×1080 square format
+**Facebook**: 1080×1080 square format, video: Seedance 1.5 Pro (5s loop, optional)
 
-**LinkedIn**: 1080×1080 or 1200×627 (landscape)
+**LinkedIn**: 1080×1080 or 1200×627 (landscape), video: Not recommended
 
 ## Session Structure
 
@@ -209,6 +210,22 @@ S3_BUCKET=your-bucket
 S3_REGION=us-east-1
 S3_ACCESS_KEY=...
 S3_SECRET_KEY=...
+```
+
+### Video generation
+```bash
+VIDEO_GEN_PROVIDER=seedance  # seedance, grok, fal
+
+# Seedance 1.5 Pro (recommended, cheapest on Kie.ai)
+# Uses same KIE_API_KEY as image generation
+# Cost: $0.0175/s, 720p, 5s loop, no audio
+
+# Grok Video (requires separate API key)
+# GROK_API_KEY=...  # Not used with seedance
+# GROK_VIDEO_API_KEY=...
+
+# fal.ai (alternative)
+# FAL_API_KEY=...
 ```
 
 ### Publishing
