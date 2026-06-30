@@ -1,0 +1,45 @@
+# Environment variables
+.env
+.env.local
+
+# Session data
+carusel-memory/
+*.session/
+sessions/
+
+# Generated assets
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.webm
+
+# Uploads
+upload/
+output/
+fragments/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+.cursor/
+
+# Logs
+*.log
+
+# Secrets
+*.key
+*.pem
+*_secret*
+*_token*
